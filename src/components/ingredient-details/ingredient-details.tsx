@@ -1,5 +1,4 @@
 import { IBurgerCard } from '../../types/burgersTypes';
-import Modal from '../modal/modal';
 
 import ingredientsModalStyles from './ingredient-details.module.css';
 
