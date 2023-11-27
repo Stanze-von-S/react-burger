@@ -12,23 +12,28 @@ function App() {
   const url = 'https://norma.nomoreparties.space/api/ingredients';
 
   useEffect(() => {
-    try {
       fetch(url)
-        .then(data => data.json())
+        .then(res => {
+          if(res.ok) {
+            return res.json();
+          }
+          return Promise.reject(`Ошибка ${res.status}`);
+        })
         .then(data => {
           if(data.success) {
             setCards(data.data)
-        }});
-    } catch (error) {
-      console.log(error);
-    }}, []);
+        }
+          return Promise.reject(`Ошибка ${data.status}`)
+        })
+        .catch(console.error);
+    }, []);
 
   return (
     <>
       <AppHeader />
       <main className={appStyles.wrapper}>
-        <BurgerIngredients cards={cards} key={'ingredients'}/>
-        <BurgerConstructor cards={cards} key={'constructor'}/>
+        <BurgerIngredients cards={cards} />
+        <BurgerConstructor cards={cards} />
       </main>
     </>
   );

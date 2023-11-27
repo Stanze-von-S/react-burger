@@ -1,5 +1,5 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
-import type { MouseEventHandler } from 'react';
+import { useEffect, useState } from 'react';
+import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import ReactDOM from 'react-dom';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
@@ -9,46 +9,28 @@ const modalRoot = document.getElementById('modal');
 
 interface ModalProps {
   children: React.ReactNode;
+  title?: string;
   onClose: () => void;
 }
 
 export default function Modal(props: ModalProps) {
-  const { children, onClose } = props;
+  const { children, onClose, title } = props;
   const [isMounted, setMounted] = useState(false);
-
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  const handleClose: MouseEventHandler<HTMLParagraphElement> =
-    useCallback(() => {
-      onClose?.();
-    }, [onClose]);
 
     useEffect(() => {
       setMounted(true);
     }, []);
 
     useEffect(() => {
-      const handleWrapperClick = (event: MouseEvent) => {
-        const { target } = event;
-        // rootRef.current - обёртка вокруг разных div, в том числе, ModalOverlay, который идёт последним
-        // извлекаем его, и далее - проверяем на совпадение с target
-        const overlay = rootRef.current?.lastChild;
-
-        if (target instanceof Node && overlay === target) {
-          onClose?.();
-        }
-      };
       const handleEscapePress = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
           onClose?.();
         }
       };
 
-      window.addEventListener('click', handleWrapperClick);
       window.addEventListener('keydown', handleEscapePress);
 
       return () => {
-        window.removeEventListener('click', handleWrapperClick);
         window.removeEventListener('keydown', handleEscapePress);
       };
     }, [onClose]);
@@ -57,12 +39,13 @@ export default function Modal(props: ModalProps) {
       isMounted
       ? ReactDOM.createPortal(
         (
-          <div className={modalStyles.wrapper} ref={rootRef}>
+          <div className={modalStyles.wrapper}>
             <div className={modalStyles.container}>
-              <p className={`${modalStyles.close} text text_type_main-large`} onClick={handleClose}>+</p>
+              <div className={`${modalStyles.close}`} onClick={onClose}><CloseIcon type='primary' /></div>
+              {title && <p className='text text_type_main-large ml-10 mt-10'>{title}</p>}
               {children}
             </div>
-            <ModalOverlay />
+            <ModalOverlay onClose={onClose} />
           </div>
         ),
         modalRoot!

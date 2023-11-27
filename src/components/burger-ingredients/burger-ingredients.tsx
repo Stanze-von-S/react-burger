@@ -2,6 +2,7 @@ import { useState } from 'react';
 import BurgerIngredientsTypeContainer from '../burger-ingredients-type-container/burger-ingredients-type-container';
 import TabElement from '../tab-element/tab-element';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import Modal from '../modal/modal';
 import { IBurgerCard, IBurgerList } from '../../types/burgersTypes';
 
 import constructorStyles from './burger-ingredients.module.css';
@@ -26,18 +27,17 @@ export default function BurgerIngredients({ cards }: IBurgerIngredientsProps) {
       <h2 className={`${constructorStyles.title} text text_type_main-large`}>
         Соберите бургер
       </h2>
-      {/*@ts-ignore */}
       <TabElement />
       <div className={`${constructorStyles.container} custom-scroll`}>        
         <BurgerIngredientsTypeContainer cards={cards} type='bun' key={'bun'} onClick={handleOpenModal}/>
         <BurgerIngredientsTypeContainer cards={cards} type='sauce' key={'sauce'} onClick={handleOpenModal}/>
         <BurgerIngredientsTypeContainer cards={cards} type='main' key={'main'} onClick={handleOpenModal}/>
       </div>
-      <>
-          {showModal && (
-            <IngredientDetails card={burger} onClose={handleCloseModal} />
-          )}
-        </>
+      {showModal && (
+        <Modal onClose={handleCloseModal} title={'Детали ингредиента'} >
+          <IngredientDetails currentIngredient={burger} />
+        </Modal>
+      )}
     </section>
   )
 }

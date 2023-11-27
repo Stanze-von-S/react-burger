@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerElement from '../burger-element/burger-element';
 import OrderDetails from '../order-details/order-details';
+import Modal from '../modal/modal';
 import { IBurgerList } from '../../types/burgersTypes';
 
 import ingredientStyles from './burger-constructor.module.css';
@@ -24,7 +25,7 @@ function BurgerConstructor({ cards }: IBurgerConstructorProps) {
       <div className="mt-20">
         {cards.length && <BurgerElement card={cards[0]} type='top' key={'top'}/>}
         <div className={`${ingredientStyles.container} custom-scroll`}>
-          {cards.length ? cards.map((card) => (
+          {cards.length ? cards.filter(card => card.type !== 'bun').map((card) => (
             <BurgerElement card={card} key={card._id} />
           )) : null}
         </div>
@@ -44,7 +45,9 @@ function BurgerConstructor({ cards }: IBurgerConstructorProps) {
         </Button>
         <>
           {showModal && (
-            <OrderDetails onClose={handleCloseModal} />
+            <Modal onClose={handleCloseModal}>
+              <OrderDetails  />
+            </Modal>
           )}
         </>
       </div>

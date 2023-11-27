@@ -15,8 +15,7 @@
 
 .close {
   position: absolute;
-  transform: rotate(45deg);
-  top: 10px;
-  right: 20px;
+  top: 40px;
+  right: 40px;
   cursor: pointer;
 }

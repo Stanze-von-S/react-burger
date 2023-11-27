@@ -20,7 +20,7 @@ export default function BurgerIngredientsCard({ card, onClick }: IBurgerIngredie
         <source srcSet={card.image_mobile} media="(max-width: 780px)" />
         <img
           src={card.image}
-          alt="Картинка булки"
+          alt={card.name}
           className={`${constructorCardStyles.image} ml-4 mr-4 mb-1`}
         />
       </picture>
