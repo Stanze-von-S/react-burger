@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import BurgerIngredientsTypeContainer from '../burger-ingredients-type-container/burger-ingredients-type-container';
+import { useModal } from '../../hooks/useModal';
 import TabElement from '../tab-element/tab-element';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
@@ -12,15 +13,12 @@ interface IBurgerIngredientsProps {
 }
 
 export default function BurgerIngredients({ cards }: IBurgerIngredientsProps) {
-  const [showModal, setShowModal] = useState<boolean>(false);
   const [burger, setBurger] = useState<IBurgerCard | null>(null);
+  const { isModalOpen, openModal, closeModal } = useModal();
   const handleOpenModal = () => (card: any) => {
-    setShowModal(true);
+    openModal();
     return setBurger(card);
   };
-  const handleCloseModal = () => {
-    setShowModal(false);
-  }
 
   return (
     <section className={`${constructorStyles.wrapper} mt-10 mr-5`}>
@@ -33,8 +31,8 @@ export default function BurgerIngredients({ cards }: IBurgerIngredientsProps) {
         <BurgerIngredientsTypeContainer cards={cards} type='sauce' key={'sauce'} onClick={handleOpenModal}/>
         <BurgerIngredientsTypeContainer cards={cards} type='main' key={'main'} onClick={handleOpenModal}/>
       </div>
-      {showModal && (
-        <Modal onClose={handleCloseModal} title={'Детали ингредиента'} >
+      {isModalOpen && (
+        <Modal onClose={closeModal} title={'Детали ингредиента'} >
           <IngredientDetails currentIngredient={burger} />
         </Modal>
       )}

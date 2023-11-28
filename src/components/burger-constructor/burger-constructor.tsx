@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerElement from '../burger-element/burger-element';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
+import { useModal } from '../../hooks/useModal';
 import { IBurgerList } from '../../types/burgersTypes';
 
 import ingredientStyles from './burger-constructor.module.css';
@@ -12,13 +12,7 @@ interface IBurgerConstructorProps {
 }
 
 function BurgerConstructor({ cards }: IBurgerConstructorProps) {
-  const [showModal, setShowModal] = useState<boolean>(false);
-  const handleOpenModal = () => {
-    setShowModal(true);
-  };
-  const handleCloseModal = () => {
-    setShowModal(false);
-  }
+  const { isModalOpen, openModal, closeModal } = useModal();
 
   return (
     <section className={`${ingredientStyles.wrapper} mt-10 ml-5`}>
@@ -40,12 +34,12 @@ function BurgerConstructor({ cards }: IBurgerConstructorProps) {
             <CurrencyIcon type="primary" />
           </div>
         </div>
-        <Button htmlType="button" type="primary" size="medium" onClick={handleOpenModal}>
+        <Button htmlType="button" type="primary" size="medium" onClick={openModal}>
           Оформить заказ
         </Button>
         <>
-          {showModal && (
-            <Modal onClose={handleCloseModal}>
+          {isModalOpen && (
+            <Modal onClose={closeModal}>
               <OrderDetails  />
             </Modal>
           )}
