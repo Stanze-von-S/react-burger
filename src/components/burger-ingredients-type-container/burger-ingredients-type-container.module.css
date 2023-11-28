@@ -1,0 +1,4 @@
+.typeContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

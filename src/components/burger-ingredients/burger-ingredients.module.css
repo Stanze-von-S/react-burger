@@ -1,0 +1,22 @@
+.wrapper {
+  width: 50%;
+}
+
+.tabWrapper {
+  display: flex;
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  overflow-y: scroll;
+  height: 55vh;
+}
+
+.typeContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

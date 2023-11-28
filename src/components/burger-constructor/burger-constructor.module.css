@@ -1,0 +1,24 @@
+.wrapper {
+  width: 50%;
+}
+
+.container {
+  overflow-y: scroll;
+  height: 35vh;
+}
+
+.totalPriceContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.totalPriceTitle {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: relative;
+  scale: 1.5;
+  top: 4px
+}

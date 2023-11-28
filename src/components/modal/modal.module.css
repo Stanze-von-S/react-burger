@@ -1,0 +1,21 @@
+.wrapper {
+  position: relative;
+}
+
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 720px;
+  background-color: #1A1B22;
+  border-radius: 40px;
+}
+
+.close {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  cursor: pointer;
+}

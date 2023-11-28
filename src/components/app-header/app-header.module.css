@@ -1,0 +1,28 @@
+.section {
+  width: 100%;
+  margin: auto;
+}
+
+.header {
+  max-width: 1240px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+}
+
+.wrapperNav {
+  display: flex;
+}
+
+.wrapperIcon {
+  display: flex;
+}
+
+.text_color_primary {
+  color: #F2F2F3;
+}
+
+.text_color_secondary {
+  color: #8585AD;
+}
