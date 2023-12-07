@@ -32,7 +32,7 @@ export default function ConstructorElementCustom ({ card, type }: IConstructorEl
             {card.price}
           </p>
           <CurrencyIcon type='primary' />
-          {type ? <LockIcon type='primary' /> : <DeleteIcon type='primary' />}
+          {type ? <LockIcon type='secondary' /> : <DeleteIcon type='primary' />}
         </div>
       </div>
     </div>
