@@ -10,24 +10,25 @@ interface BurgerIngredientsTypeContainerProps {
   onClick: any;
 }
 
-export default function BurgerIngredientsTypeContainer({ cards, type, onClick }: BurgerIngredientsTypeContainerProps) {
+const BurgerIngredientsTypeContainer = React.forwardRef(({ cards, type, onClick }: BurgerIngredientsTypeContainerProps, ref) => {
   const typesCard = cards.length ? cards.filter(card => card.type === type) : [];
   return (
     <>
-      {type === 'bun' && <h3 className="text text_type_main-medium">
-        Булки
-      </h3>}
-      {type === 'main' && <h3 className="text text_type_main-medium">
-        Начинки
-      </h3>}
-      {type === 'sauce' && <h3 className="text text_type_main-medium">
-        Соусы
-      </h3>}
+    {/*@ts-ignore*/ }
+    <div className={constructorTypesContainerStyles.container} ref={ref}>
+      <h3 className="text text_type_main-medium">
+        {type === 'bun' && 'Булки'}
+        {type === 'main' && 'Начинки'}
+        {type === 'sauce' && 'Соусы'}
+      </h3>
       <div className={`${constructorTypesContainerStyles.typeContainer} ml-4 mt-6 mr-4 mb-2`}>
         {typesCard.length ? typesCard.map(card => (
           <BurgerIngredientsCard card={card} key={card._id} onClick={onClick} />
         )) : null}
       </div>
+    </div>
     </>
   );
-}
+});
+
+export default BurgerIngredientsTypeContainer;
