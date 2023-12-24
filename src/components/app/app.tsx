@@ -1,40 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { DndProvider } from 'react-dnd'
+	import { HTML5Backend } from 'react-dnd-html5-backend'
 import './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { IBurgerList } from '../../types/burgersTypes';
+import { loadList } from '../../services/burger-ingredients/actions';
 
 import appStyles from './app.module.css';
 
 function App() {
-  const [cards, setCards] = useState<IBurgerList>([]);
-  const url = 'https://norma.nomoreparties.space/api/ingredients';
-
+  const dispatch = useDispatch();
+  
   useEffect(() => {
-      fetch(url)
-        .then(res => {
-          if(res.ok) {
-            return res.json();
-          }
-          return Promise.reject(`Ошибка ${res.status}`);
-        })
-        .then(data => {
-          if(data.success) {
-            setCards(data.data)
-        }
-          return Promise.reject(`Ошибка ${data.status}`)
-        })
-        .catch(console.error);
-    }, []);
+    //@ts-ignore
+    dispatch(loadList());
+  }, []);
 
   return (
     <>
       <AppHeader />
-      <main className={appStyles.wrapper}>
-        <BurgerIngredients cards={cards} />
-        <BurgerConstructor cards={cards} />
-      </main>
+      <DndProvider backend={HTML5Backend}>
+        <main className={appStyles.wrapper}>
+          <BurgerIngredients />
+          <BurgerConstructor />          
+        </main>
+      </DndProvider>
     </>
   );
 }

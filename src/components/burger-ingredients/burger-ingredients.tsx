@@ -1,31 +1,36 @@
 import { useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import BurgerIngredientsTypeContainer from '../burger-ingredients-type-container/burger-ingredients-type-container';
-import { useModal } from '../../hooks/useModal';
 import TabElement from '../tab-element/tab-element';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { IBurgerCard, IBurgerList } from '../../types/burgersTypes';
+import { IBurgerCard } from '../../types/burgersTypes';
+import { buns, sauces, mains } from '../../services/burger-ingredients/selectors';
+import { ingredientDetails } from '../../services/ingredient-details/selectors';
+import { DROP_INGREDIENT } from '../../services/ingredient-details/actions';
 
 import constructorStyles from './burger-ingredients.module.css';
 
-interface IBurgerIngredientsProps {
-  cards: IBurgerList;
-}
-
-export const BurgerIngredients = (({ cards }: IBurgerIngredientsProps) => {
-  const [burger, setBurger] = useState<IBurgerCard | null>(null);
+export const BurgerIngredients = (() => {  
+  const bunsList = useSelector(buns);
+  const saucesList = useSelector(sauces);
+  const mainsList = useSelector(mains);
+  const ingredientDetailsCurrent = useSelector(ingredientDetails);
   const [tabState, setTabState] = useState<string>('bun');
-  const { isModalOpen, openModal, closeModal } = useModal();
   const containerRef = useRef(null);
   const bunRef = useRef(null);
   const mainRef = useRef(null);
   const sauceRef = useRef(null);
+  const dispatch = useDispatch();
   const handleOpenModal = () => (card: any) => {
-    openModal();
-    return setBurger(card);
   };
+  const closeModal = () => {
+    dispatch({
+      type: DROP_INGREDIENT,
+    });
+  }
 
-  const handlerScroll = (e: any) => {
+  const handlerScroll = () => {
     const bun = bunRef.current;
     const main = mainRef.current;
     const sauce = sauceRef.current;
@@ -67,7 +72,7 @@ export const BurgerIngredients = (({ cards }: IBurgerIngredientsProps) => {
     } else if (topMain <= 0 && bottomMain > 0) {
       setTabState('main');
     }
-  }
+  };
 
   return (
     <section className={`${constructorStyles.wrapper} mt-10 mr-5`}>
@@ -76,13 +81,13 @@ export const BurgerIngredients = (({ cards }: IBurgerIngredientsProps) => {
       </h2>
       <TabElement currentTab={tabState} setTab={setTabState}/>
       <div className={`${constructorStyles.container} custom-scroll`} ref={containerRef} onScroll={handlerScroll}>        
-        <BurgerIngredientsTypeContainer cards={cards} type='bun' key={'bun'} onClick={handleOpenModal} ref={bunRef}/>
-        <BurgerIngredientsTypeContainer cards={cards} type='sauce' key={'sauce'} onClick={handleOpenModal} ref={sauceRef}/>
-        <BurgerIngredientsTypeContainer cards={cards} type='main' key={'main'} onClick={handleOpenModal} ref={mainRef}/>
+        <BurgerIngredientsTypeContainer cards={bunsList} title='Булки' key={'bun'} ref={bunRef}/>
+        <BurgerIngredientsTypeContainer cards={saucesList} title='Соусы' key={'sauce'} ref={sauceRef}/>
+        <BurgerIngredientsTypeContainer cards={mainsList} title='Начинки' key={'main'} ref={mainRef}/>
       </div>
-      {isModalOpen && (
+      {ingredientDetailsCurrent && (
         <Modal onClose={closeModal} title={'Детали ингредиента'} >
-          <IngredientDetails currentIngredient={burger} />
+          {ingredientDetailsCurrent && <IngredientDetails currentIngredient={ingredientDetailsCurrent} />}
         </Modal>
       )}
     </section>

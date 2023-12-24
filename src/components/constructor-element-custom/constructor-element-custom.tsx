@@ -1,19 +1,22 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { CurrencyIcon, LockIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { IBurgerCard } from '../../types/burgersTypes';
-
+import type { CSSProperties } from 'react';
 import constructorElementStyles from './constructor-element-custom.module.css';
 
 interface IConstructorElementCustomProps {
   card: IBurgerCard;
+  style?: CSSProperties;
   type?: 'top' | 'bottom';
 }
 
-export default function ConstructorElementCustom ({ card, type }: IConstructorElementCustomProps) {
+const ConstructorElementCustom = forwardRef(({ card, type, style }: IConstructorElementCustomProps, ref) => {
   const name = type === 'top' ? `${card.name} (верх)` : type === 'bottom' ? `${card.name} (низ)` : card.name;
 
   return (
-    <div
+    //@ts-ignore
+    <div ref={ref}
+      style={style}
       className={`${constructorElementStyles.constructorElement}
       ${type === 'top' ? constructorElementStyles.constructorElement_pos_top : type === 'bottom' ? constructorElementStyles.constructorElement_pos_bottom : ''}
       ${type ? 'mr-4' : 'mr-1'}`}
@@ -36,5 +39,7 @@ export default function ConstructorElementCustom ({ card, type }: IConstructorEl
         </div>
       </div>
     </div>
-  )
-}
+  );
+});
+
+export default ConstructorElementCustom;

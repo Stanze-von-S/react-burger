@@ -1,9 +1,9 @@
-import { IBurgerCard } from '../../types/burgersTypes';
+import { IIngredientCard } from '../../types/burgersTypes';
 
 import ingredientsModalStyles from './ingredient-details.module.css';
 
 interface IngredientDetailsProps {
-  currentIngredient: IBurgerCard | null;
+  currentIngredient: IIngredientCard | null;
 }
 
 export default function IngredientDetails(props: IngredientDetailsProps) {

@@ -1,10 +1,12 @@
+
 .wrapper {
   width: 50%;
 }
 
 .container {
   overflow-y: scroll;
-  height: 35vh;
+  /* background-color: var(--background-alt); */
+  max-height: 35vh;
 }
 
 .totalPriceContainer {
