@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import type { CSSProperties } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { AppContext } from '../app/app';
 import { IBurgerCard, IngredientsItemTypes } from '../../types/burgersTypes';
 import { ADD_BUN, ADD_INGREDIENT } from '../../services/burger-constructor/actions';
 import { CREATE_INGREDIENT } from '../../services/ingredient-details/actions';
@@ -13,8 +14,6 @@ interface IBurgerIngredientsCardProps {
   card: IBurgerCard;
   count?: number;
   bunCount?: number;
-  setCount: (_id: string) => void;
-  setBun: (_id: string) => void;
 }
 
 const style: CSSProperties = {
@@ -30,8 +29,9 @@ interface DropResult {
   _id: string;
 }
 
-export default function BurgerIngredientsCard({ card, count, bunCount, setCount, setBun  }: IBurgerIngredientsCardProps) {
+export default function BurgerIngredientsCard({ card, count, bunCount }: IBurgerIngredientsCardProps) {
   const dispatch = useDispatch();
+  const { reducerDispatch } = useContext(AppContext);
   const handleClick = () => {
     dispatch({
       type: CREATE_INGREDIENT,
@@ -47,10 +47,18 @@ export default function BurgerIngredientsCard({ card, count, bunCount, setCount,
       if (item && dropResult) {
         if(card.type !== 'bun') {
           dispatch({ type: ADD_INGREDIENT, payload: card });
-          setCount(card._id);
+          //@ts-ignore
+          reducerDispatch({
+            type: 'increments_ingredient',
+            payload: card._id,
+          });
         } else {
           dispatch({ type: ADD_BUN, payload: card });
-          setBun(card._id);
+          //@ts-ignore
+          reducerDispatch({
+            type: 'increments_buns',
+            payload: card._id,
+          });
         }
       }
     },

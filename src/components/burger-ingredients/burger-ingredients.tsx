@@ -4,14 +4,13 @@ import BurgerIngredientsTypeContainer from '../burger-ingredients-type-container
 import TabElement from '../tab-element/tab-element';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Modal from '../modal/modal';
-import { IBurgerCard } from '../../types/burgersTypes';
 import { buns, sauces, mains } from '../../services/burger-ingredients/selectors';
 import { ingredientDetails } from '../../services/ingredient-details/selectors';
 import { DROP_INGREDIENT } from '../../services/ingredient-details/actions';
 
 import constructorStyles from './burger-ingredients.module.css';
 
-export const BurgerIngredients = (() => {  
+export const BurgerIngredients = () => {  
   const bunsList = useSelector(buns);
   const saucesList = useSelector(sauces);
   const mainsList = useSelector(mains);
@@ -22,8 +21,6 @@ export const BurgerIngredients = (() => {
   const mainRef = useRef(null);
   const sauceRef = useRef(null);
   const dispatch = useDispatch();
-  const handleOpenModal = () => (card: any) => {
-  };
   const closeModal = () => {
     dispatch({
       type: DROP_INGREDIENT,
@@ -92,6 +89,6 @@ export const BurgerIngredients = (() => {
       )}
     </section>
   )
-});
+};
 
 export default BurgerIngredients;

@@ -1,17 +1,35 @@
-import React, { forwardRef } from 'react';
+import React, { useContext, forwardRef } from 'react';
+import { useDispatch } from 'react-redux';
 import { CurrencyIcon, LockIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IBurgerCard } from '../../types/burgersTypes';
+import { AppContext } from '../app/app';
+import { IIngredientCard } from '../../types/burgersTypes';
 import type { CSSProperties } from 'react';
+import { DELETE_INGREDIENT } from '../../services/burger-constructor/actions';
+
 import constructorElementStyles from './constructor-element-custom.module.css';
 
 interface IConstructorElementCustomProps {
-  card: IBurgerCard;
+  card: IIngredientCard;
   style?: CSSProperties;
   type?: 'top' | 'bottom';
 }
 
 const ConstructorElementCustom = forwardRef(({ card, type, style }: IConstructorElementCustomProps, ref) => {
+  const dispatch = useDispatch();
+  const { reducerDispatch } = useContext(AppContext);
   const name = type === 'top' ? `${card.name} (верх)` : type === 'bottom' ? `${card.name} (низ)` : card.name;
+
+  const deleteHandler = (ingredientId: string, _id: string) => {
+    //@ts-ignore
+    reducerDispatch({
+      type: 'decrements_ingredient',
+      payload: _id,
+    });
+    dispatch({
+      type: DELETE_INGREDIENT,
+      payload: ingredientId,
+    });
+  }
 
   return (
     //@ts-ignore
@@ -35,7 +53,7 @@ const ConstructorElementCustom = forwardRef(({ card, type, style }: IConstructor
             {card.price}
           </p>
           <CurrencyIcon type='primary' />
-          {type ? <LockIcon type='secondary' /> : <DeleteIcon type='primary' />}
+          {type ? <LockIcon type='secondary' /> : <DeleteIcon onClick={() => deleteHandler(card.ingredientId, card._id)} type='primary' />}
         </div>
       </div>
     </div>

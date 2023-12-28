@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from '../app/app';
 import BurgerIngredientsCard from '../burger-ingredients-card/burger-ingredients-card';
 import { IBurgerList } from '../../types/burgersTypes';
 
@@ -10,38 +11,7 @@ interface BurgerIngredientsTypeContainerProps {
 }
 
 const BurgerIngredientsTypeContainer = React.forwardRef(({ cards, title }: BurgerIngredientsTypeContainerProps, ref) => {
-  const [counts, setCounts] = useState<Map<string, number>>(new Map());
-  const [bunCounts, setBunCounts] = useState<Map<string, number>>(new Map());
-  
-  const setCount = (_id: string) => {   
-    setCounts((prevState: Map<string, number>) => {
-      if (prevState.has(_id)) {
-        prevState.set(_id, prevState.get(_id)! + 1);
-        const nextState = new Map(prevState);
-        return nextState;
-      } else {
-        prevState.set(_id, 1);
-        const nextState = new Map(prevState);
-        return nextState;
-      }
-    }); 
-  };
-
-  const setBun = (_id: string) => {
-    setBunCounts((prevState: Map<string, number>) => {
-      if (prevState.size === 0) {
-        prevState.set(_id, 2);
-        const nextState = new Map(prevState);
-        return nextState;
-      } else {
-        prevState.clear();
-        prevState.set(_id, 2);
-        const nextState = new Map(prevState);
-        return nextState;
-      }
-    });
-  };
-
+  const { state }: any = useContext(AppContext);
   return (
     //@ts-ignore
     <div className={constructorTypesContainerStyles.container} ref={ref}>
@@ -50,10 +20,10 @@ const BurgerIngredientsTypeContainer = React.forwardRef(({ cards, title }: Burge
       </h3>
       <div className={`${constructorTypesContainerStyles.typeContainer} ml-4 mt-6 mr-4 mb-2`}>
         {cards.length ? cards.map(card => {
-          const count = counts.get(card._id);
-          const bunCount = bunCounts.get(card._id);
+          const count = state ? state.ingredients.get(card._id) : undefined;
+          const bunCount = state ? state.buns.get(card._id) : undefined;
           return (
-          <BurgerIngredientsCard card={card} key={card._id} setCount={setCount} setBun={setBun} count={count} bunCount={bunCount} />
+          <BurgerIngredientsCard card={card} key={card._id} count={count} bunCount={bunCount} />
         )}) : null}
       </div>
     </div>

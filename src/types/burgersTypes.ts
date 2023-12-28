@@ -33,14 +33,21 @@ export type IBurgerList = Array<IBurgerCard>;
 export interface IBurgerIngredientsState {
   ingredients: IBurgerCard[];
   loading: boolean;
-  error: string | null;
-  
+  error: string | null;  
+}
+
+export interface IState {
+  ingredients: Map<string, number>,
+  buns: Map<string, number>,
+}
+
+export interface IPayload {
+  type: string;
+  payload: string;
 }
 
 export interface IIngredientCard extends IBurgerCard {
   ingredientId: string;
-  index: number;
-
 }
 
 export interface IBurgerConstructorState {
@@ -53,7 +60,14 @@ export interface IIngredientDetailState {
 }
 
 export interface IOrderDetails {
-  ingredients: IIngredientCard[];
+  ingredients: string[];
+}
+
+export interface IOrderDetailsState {
+  orderId: string;
+  ingredients: string[];
+  loading: boolean;
+  error: string | null;
 }
 
 export const IngredientsItemTypes = {
@@ -63,9 +77,8 @@ export const IngredientsItemTypes = {
 
 
 export interface ElementProps {
-  id: any;
+  id: string;
   text: string;
-  index: number;
   moveElement: (dragIndex: string, hoverIndex: string | undefined) => void;
 }
 
@@ -84,5 +97,5 @@ export interface IStore {
   burgerIngredients: IBurgerIngredientsState,
   burgerConstructor: IBurgerConstructorState,
   ingredientDetails: IIngredientDetailState,
-  // orderDetail: IOrderDetails,
+  orderDetails: IOrderDetailsState,
 }

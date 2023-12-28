@@ -21,14 +21,14 @@ export const reducer = (state = initialState, action: any) => {
         ...state,
         loading: false,
         error: action.payload,
-      }
+      };
     }
     case LOAD_INGREDIENTS_PENDING: {
       return {
         ...state,
         loading: true,
         error: null,
-      }
+      };
     }
     default: {
       return state;

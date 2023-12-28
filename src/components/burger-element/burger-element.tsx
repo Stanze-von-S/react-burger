@@ -3,17 +3,17 @@ import type { CSSProperties } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import type { Identifier, XYCoord } from 'dnd-core';
 import { DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { IIngredientCard, IngredientsItemTypes } from '../../types/burgersTypes';
+import { IIngredientCard, IngredientsItemTypes, IState } from '../../types/burgersTypes';
 import ConstructorElementCustom from '../constructor-element-custom/constructor-element-custom';
 import ConstructorElementCustomEmpty from '../constructor-element-custom-empty/constructor-element-custom-empty';
-import type { DragItem, ElementProps } from '../../types/burgersTypes';
+import type { DragItem } from '../../types/burgersTypes';
 import { ConstructorItemTypes } from '../../utils/constants';
 
 import elementStyles from './burger-element.module.css';
 
 interface IBurgerElementProps {
   card?: IIngredientCard;  
-  moveElement?: (dragIndex: number, hoverIndex: number | undefined) => void;
+  moveElement?: (dragIndex: number, hoverIndex: number) => void;
   index?: number;
   type?: 'top' | 'bottom';
 }
@@ -23,11 +23,11 @@ const constructorStyle: CSSProperties = {
   cursor: 'move',
 }
 
-const BurgerElement = ({ card, type, moveElement }: IBurgerElementProps) => {
+const BurgerElement = ({ card, type, moveElement, index }: IBurgerElementProps) => {
   // D-n-d для перетаскивания ингредиентов из списка ингредиентов в конструктор бургера.
   const [{ canDrop, isOver }, dropBun] = useDrop(() => ({
     accept: type ? IngredientsItemTypes.BUN : IngredientsItemTypes.MAIN,
-    drop: () => ({ name: 'Dustbin' }),
+    dropBun: () => ({ name: 'Dustbin' }),
     collect: (monitor) => ({
       isOver: card?.type && monitor.isOver(),
       canDrop: card?.type && monitor.canDrop(),
@@ -60,7 +60,7 @@ const BurgerElement = ({ card, type, moveElement }: IBurgerElementProps) => {
         return
       }
       const dragIndex = item.index;
-      const hoverIndex = card?.index;
+      const hoverIndex = index;
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -95,7 +95,7 @@ const BurgerElement = ({ card, type, moveElement }: IBurgerElementProps) => {
       }
 
       // Time to actually perform the action
-      moveElement && moveElement(dragIndex, hoverIndex as number)
+      moveElement && moveElement(dragIndex, hoverIndex!)
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
@@ -113,7 +113,7 @@ const BurgerElement = ({ card, type, moveElement }: IBurgerElementProps) => {
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
     }),
-  })
+  });
 
   const opacity = isDragging ? 0 : 1
   drag(drop(ref))

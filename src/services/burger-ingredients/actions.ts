@@ -7,7 +7,7 @@ export const LOAD_INGREDIENTS_ERROR = 'LOAD_INGREDIENTS_ERROR'
 export const LOAD_LIST_SUCCESS = 'LOAD_LIST_SUCCESS'; 
 
 export const loadList = () => (dispatch: any) => {
-  dispatch({type: LOAD_INGREDIENTS_PENDING});
+  dispatch({ type: LOAD_INGREDIENTS_PENDING });
   return loadListIngredientsApi().then(res => {
     dispatch({
       type: LOAD_INGREDIENTS_SUCCESS,
@@ -19,5 +19,5 @@ export const loadList = () => (dispatch: any) => {
       type: LOAD_INGREDIENTS_ERROR,
       payload: error.message,
     });
-  })
+  });
 };
