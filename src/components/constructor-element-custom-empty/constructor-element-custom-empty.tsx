@@ -11,8 +11,7 @@ const ConstructorElementCustomEmpty = forwardRef(({ type, style }: IConstructorE
   const name = type ? 'Выберите булку' : 'Выберите начинку';
   
   return (
-    //@ts-ignore
-    <div ref={ref}
+    <div ref={ref as React.RefObject<HTMLDivElement>}
     style={style}
     className={`${constructorElementEmptyStyles.constructorElement}
       ${type === 'top' ? constructorElementEmptyStyles.constructorElement_pos_top : type === 'bottom' ? constructorElementEmptyStyles.constructorElement_pos_bottom : ''} mr-4`}

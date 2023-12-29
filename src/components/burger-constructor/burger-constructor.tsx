@@ -1,10 +1,9 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { CSSProperties } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useDrop } from 'react-dnd'
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { AppContext } from '../app/app';
 import BurgerElement from '../burger-element/burger-element';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
@@ -13,14 +12,13 @@ import { bun, ingredients } from '../../services/burger-constructor/selectors';
 import { ingredientsOrder, orderIndex } from '../../services/order-details/selectors';
 import { DRAG_INGREDIENT, RESET_INGREDIENTS } from '../../services/burger-constructor/actions';
 import { CREATE_ORDER, RESET_ORDER, loadOrder } from '../../services/order-details/actions';
+import { RESET_COUNTERS } from '../../services/counter-ingredients/actions';
 
 import ingredientStyles from './burger-constructor.module.css';
 
 const ingredientStyle: CSSProperties = {};
 
-function BurgerConstructor() {
-  const { reducerDispatch } = useContext(AppContext);
-  
+function BurgerConstructor() {  
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const ingredientsList = useSelector(ingredients);
   const currentBun = useSelector(bun);
@@ -34,15 +32,14 @@ function BurgerConstructor() {
     dispatch({
       type: RESET_ORDER,
     });
-    reducerDispatch({
-      type: 'reset_counters'
+    dispatch({
+      type: RESET_COUNTERS,
     });
     setIsLoading(false);
   };
 
   useEffect(() => {
-    //@ts-ignore
-    isLoading && dispatch(loadOrder(ingredientsOrderList));
+    isLoading && dispatch<any>(loadOrder(ingredientsOrderList));
   }, [ingredientsOrderList, isLoading, dispatch]);
 
   // D-n-d для перетаскивания ингредиентов из списка ингредиентов в конструктор бургеров

@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
 import type { CSSProperties } from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag } from 'react-dnd';
+import { v4 as uuidv4 } from 'uuid';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { AppContext } from '../app/app';
-import { IBurgerCard, IngredientsItemTypes } from '../../types/burgersTypes';
+import { IBurgerCard, IIngredientCard, IngredientsItemTypes } from '../../types/burgersTypes';
 import { ADD_BUN, ADD_INGREDIENT } from '../../services/burger-constructor/actions';
+import { INCREMENTS_INGREDIENT, INCREMENTS_BUNS } from '../../services/counter-ingredients/actions';
 import { CREATE_INGREDIENT } from '../../services/ingredient-details/actions';
 
 import constructorCardStyles from './burger-ingredients-card.module.css';
@@ -31,7 +31,6 @@ interface DropResult {
 
 export default function BurgerIngredientsCard({ card, count, bunCount }: IBurgerIngredientsCardProps) {
   const dispatch = useDispatch();
-  const { reducerDispatch } = useContext(AppContext);
   const handleClick = () => {
     dispatch({
       type: CREATE_INGREDIENT,
@@ -46,19 +45,19 @@ export default function BurgerIngredientsCard({ card, count, bunCount }: IBurger
       const dropResult = monitor.getDropResult<DropResult>()
       if (item && dropResult) {
         if(card.type !== 'bun') {
-          dispatch({ type: ADD_INGREDIENT, payload: card });
-          //@ts-ignore
-          reducerDispatch({
-            type: 'increments_ingredient',
-            payload: card._id,
-          });
+          const uniqueCard: IIngredientCard = {
+            ...card,
+            ingredientId: uuidv4(),
+          };
+          dispatch({ type: ADD_INGREDIENT, payload: uniqueCard });
+          dispatch({ type: INCREMENTS_INGREDIENT, payload: card._id });
         } else {
-          dispatch({ type: ADD_BUN, payload: card });
-          //@ts-ignore
-          reducerDispatch({
-            type: 'increments_buns',
-            payload: card._id,
-          });
+          const uniqueCard: IIngredientCard = {
+            ...card,
+            ingredientId: uuidv4(),
+          };
+          dispatch({ type: ADD_BUN, payload: uniqueCard });
+          dispatch({ type: INCREMENTS_BUNS, payload: card._id });
         }
       }
     },

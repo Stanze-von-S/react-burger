@@ -1,10 +1,10 @@
-import React, { useContext, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { CurrencyIcon, LockIcon, DeleteIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { AppContext } from '../app/app';
 import { IIngredientCard } from '../../types/burgersTypes';
 import type { CSSProperties } from 'react';
 import { DELETE_INGREDIENT } from '../../services/burger-constructor/actions';
+import { DECREMENTS_INGREDIENT } from '../../services/counter-ingredients/actions';
 
 import constructorElementStyles from './constructor-element-custom.module.css';
 
@@ -16,15 +16,13 @@ interface IConstructorElementCustomProps {
 
 const ConstructorElementCustom = forwardRef(({ card, type, style }: IConstructorElementCustomProps, ref) => {
   const dispatch = useDispatch();
-  const { reducerDispatch } = useContext(AppContext);
   const name = type === 'top' ? `${card.name} (верх)` : type === 'bottom' ? `${card.name} (низ)` : card.name;
 
   const deleteHandler = (ingredientId: string, _id: string) => {
-    //@ts-ignore
-    reducerDispatch({
-      type: 'decrements_ingredient',
+    dispatch({
+      type: DECREMENTS_INGREDIENT,
       payload: _id,
-    });
+    })
     dispatch({
       type: DELETE_INGREDIENT,
       payload: ingredientId,
@@ -32,8 +30,7 @@ const ConstructorElementCustom = forwardRef(({ card, type, style }: IConstructor
   }
 
   return (
-    //@ts-ignore
-    <div ref={ref}
+    <div ref={ref as React.RefObject<HTMLDivElement>}
       style={style}
       className={`${constructorElementStyles.constructorElement}
       ${type === 'top' ? constructorElementStyles.constructorElement_pos_top : type === 'bottom' ? constructorElementStyles.constructorElement_pos_bottom : ''}

@@ -16,10 +16,10 @@ export const BurgerIngredients = () => {
   const mainsList = useSelector(mains);
   const ingredientDetailsCurrent = useSelector(ingredientDetails);
   const [tabState, setTabState] = useState<string>('bun');
-  const containerRef = useRef(null);
-  const bunRef = useRef(null);
-  const mainRef = useRef(null);
-  const sauceRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const bunRef = useRef<HTMLDivElement>(null);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const sauceRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const closeModal = () => {
     dispatch({
@@ -41,25 +41,18 @@ export const BurgerIngredients = () => {
     let topSauce = 0;
     let bottomSauce = 0;
     if (container) {
-      //@ts-ignore
       topContainer = container.getBoundingClientRect().top;
     }
     if (bun) {
-      //@ts-ignore
       topBun = bun.getBoundingClientRect().top - topContainer;
-      //@ts-ignore
       bottomBun = bun.getBoundingClientRect().bottom - topContainer;
     }
     if (main) {
-      //@ts-ignore
       topMain = main.getBoundingClientRect().top - topContainer;
-      //@ts-ignore
       bottomMain = main.getBoundingClientRect().bottom - topContainer;
     }
     if (sauce) {
-      //@ts-ignore
       topSauce = sauce.getBoundingClientRect().top - topContainer;
-      //@ts-ignore
       bottomSauce = sauce.getBoundingClientRect().bottom - topContainer;
     }
     if (topBun <= 0 && bottomBun > 0) {

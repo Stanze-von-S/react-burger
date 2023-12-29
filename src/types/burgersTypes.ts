@@ -70,11 +70,15 @@ export interface IOrderDetailsState {
   error: string | null;
 }
 
+export interface ICounterIngredientsState {
+  ingredients: Map<string, number>;
+  buns: Map<string, number>;
+}
+
 export const IngredientsItemTypes = {
   BUN: 'bun',
   MAIN: 'main',
-}
-
+};
 
 export interface ElementProps {
   id: string;
@@ -98,4 +102,5 @@ export interface IStore {
   burgerConstructor: IBurgerConstructorState,
   ingredientDetails: IIngredientDetailState,
   orderDetails: IOrderDetailsState,
+  countersIngredients: ICounterIngredientsState,
 }

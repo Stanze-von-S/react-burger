@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
-import { AppContext } from '../app/app';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import BurgerIngredientsCard from '../burger-ingredients-card/burger-ingredients-card';
+import {  ingredientsCounter, bunsCounter } from '../../services/counter-ingredients/selectors';
 import { IBurgerList } from '../../types/burgersTypes';
 
 import constructorTypesContainerStyles from './burger-ingredients-type-container.module.css';
@@ -11,17 +12,17 @@ interface BurgerIngredientsTypeContainerProps {
 }
 
 const BurgerIngredientsTypeContainer = React.forwardRef(({ cards, title }: BurgerIngredientsTypeContainerProps, ref) => {
-  const { state }: any = useContext(AppContext);
+  const buns = useSelector(bunsCounter);
+  const ingredients = useSelector(ingredientsCounter);
   return (
-    //@ts-ignore
-    <div className={constructorTypesContainerStyles.container} ref={ref}>
+    <div className={constructorTypesContainerStyles.container} ref={ref as React.RefObject<HTMLDivElement>}>
       <h3 className="text text_type_main-medium">
         {title}
       </h3>
       <div className={`${constructorTypesContainerStyles.typeContainer} ml-4 mt-6 mr-4 mb-2`}>
         {cards.length ? cards.map(card => {
-          const count = state ? state.ingredients.get(card._id) : undefined;
-          const bunCount = state ? state.buns.get(card._id) : undefined;
+          const count = ingredients.get(card._id);
+          const bunCount = buns.get(card._id);
           return (
           <BurgerIngredientsCard card={card} key={card._id} count={count} bunCount={bunCount} />
         )}) : null}

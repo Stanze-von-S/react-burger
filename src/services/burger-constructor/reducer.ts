@@ -1,5 +1,4 @@
 import { IBurgerConstructorState } from '../../types/burgersTypes';
-import { v4 as uuidv4 } from 'uuid';
 import { ADD_BUN, ADD_INGREDIENT, DELETE_INGREDIENT, DRAG_INGREDIENT, RESET_INGREDIENTS } from './actions';
 
 const initialState: IBurgerConstructorState = {
@@ -10,10 +9,9 @@ const initialState: IBurgerConstructorState = {
 export const reducer = (state = initialState, action: any) => {
   switch (action.type) {
     case ADD_INGREDIENT: {
-      const ingredient = { ...action.payload, ingredientId: uuidv4() };
       return {
         ...state,
-        ingredients: [...state.ingredients, ingredient],
+        ingredients: [...state.ingredients, action.payload],
       };
     }
     case DELETE_INGREDIENT: {
@@ -23,10 +21,9 @@ export const reducer = (state = initialState, action: any) => {
       };
     }
     case ADD_BUN: {
-      const ingredient = { ...action.payload, ingredientId: uuidv4() };
       return {
         ...state,
-        bun: ingredient,
+        bun: action.payload,
       };
     }
     case DRAG_INGREDIENT: {
