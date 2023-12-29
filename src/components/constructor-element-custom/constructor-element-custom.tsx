@@ -4,7 +4,6 @@ import { CurrencyIcon, LockIcon, DeleteIcon } from '@ya.praktikum/react-develope
 import { IIngredientCard } from '../../types/burgersTypes';
 import type { CSSProperties } from 'react';
 import { DELETE_INGREDIENT } from '../../services/burger-constructor/actions';
-import { DECREMENTS_INGREDIENT } from '../../services/counter-ingredients/actions';
 
 import constructorElementStyles from './constructor-element-custom.module.css';
 
@@ -19,10 +18,6 @@ const ConstructorElementCustom = forwardRef(({ card, type, style }: IConstructor
   const name = type === 'top' ? `${card.name} (верх)` : type === 'bottom' ? `${card.name} (низ)` : card.name;
 
   const deleteHandler = (ingredientId: string, _id: string) => {
-    dispatch({
-      type: DECREMENTS_INGREDIENT,
-      payload: _id,
-    })
     dispatch({
       type: DELETE_INGREDIENT,
       payload: ingredientId,

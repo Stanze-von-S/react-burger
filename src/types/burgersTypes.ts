@@ -102,5 +102,4 @@ export interface IStore {
   burgerConstructor: IBurgerConstructorState,
   ingredientDetails: IIngredientDetailState,
   orderDetails: IOrderDetailsState,
-  countersIngredients: ICounterIngredientsState,
 }

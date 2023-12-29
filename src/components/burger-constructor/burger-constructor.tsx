@@ -12,7 +12,6 @@ import { bun, ingredients } from '../../services/burger-constructor/selectors';
 import { ingredientsOrder, orderIndex } from '../../services/order-details/selectors';
 import { DRAG_INGREDIENT, RESET_INGREDIENTS } from '../../services/burger-constructor/actions';
 import { CREATE_ORDER, RESET_ORDER, loadOrder } from '../../services/order-details/actions';
-import { RESET_COUNTERS } from '../../services/counter-ingredients/actions';
 
 import ingredientStyles from './burger-constructor.module.css';
 
@@ -31,9 +30,6 @@ function BurgerConstructor() {
     });
     dispatch({
       type: RESET_ORDER,
-    });
-    dispatch({
-      type: RESET_COUNTERS,
     });
     setIsLoading(false);
   };
